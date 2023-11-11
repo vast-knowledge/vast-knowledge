@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/stylesheets/personalized.css' | relative_url }}">
+    <title>{{ page.title }}</title>
+</head>
+<body>
+    {% include propaganda2.html %}
+    <div class="post">
+        <h1>{{ page.title }}</h1>
+        <div class="conteudo">
+            {{ content }}
+        </div>
+    </div>
+    {% include propaganda.html %}
+    {% include popupAD.html %}
+</body>
+</html>

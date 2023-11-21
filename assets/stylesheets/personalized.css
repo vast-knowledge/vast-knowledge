@@ -2,6 +2,10 @@ body {
     margin: 10px;
 }
 
+.posts {
+    margin: 0 auto;
+}
+
 .post {
     margin: 0 auto;
     width: 80%;
@@ -38,7 +42,10 @@ body {
     height: 250px;
 }
 
-.janela button {
+.janela a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 200px;
     height: 50px;
     background-color: rgb(94, 233, 94);
@@ -47,6 +54,7 @@ body {
     color: white;
     cursor: pointer;
     font-size: 22px;
+    text-decoration: none;
     box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
 }
 
@@ -85,17 +93,21 @@ body {
     margin: 10px;
 }
 
-.propaganda button {
+.propaganda a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 250px;
     height: 100px;
     background-color: #316dc2;
     color: white;
     font-size: 24px;
     font-weight: bold;
+    text-decoration: none;
     cursor: pointer;
 }
 
-.propaganda button:hover {
+.propaganda a:hover {
     background-color: #54a0ec;
 }
 
@@ -105,18 +117,30 @@ body {
     padding: 5px;
     margin: 0 auto;
     margin-bottom: 10px;
-    width: 80%;
+    width: 810px;
+    height: 88px;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: yellow;
+    color: white;
+    background: radial-gradient(ellipse farthest-corner at 0 140%, #3c84cc 0%, #316dc2 70%, #4e95d3 70%);
+    background-image: url("/assets/img/fale-ingles-820-90.jpeg");
 }
 
-.propaganda2 button {
-    width: 80px;
+.propaganda2 a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 105px;
     height: 30px;
     cursor: pointer;
-    background-color: white;
+    color: white;
+    font-weight: bold;
+    border: none;
+    background-color: rgb(152, 35, 230);
+    border: solid 2px #4e95d3;
+    text-decoration: none;
+    margin-top: 50px;
 }
 
 @media (max-width: 900px) {
@@ -133,8 +157,9 @@ body {
     }
 
     .propaganda2 {
-        width: 95%;
+        width: 370px;
         font-size: 14px;
+        background-image: url("/assets/img/fale-ingles-380-90.jpeg");
     }
 
     h1 {

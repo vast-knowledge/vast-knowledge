@@ -1,15 +1,21 @@
 ---
 layout: postagem
 title:  "Desbravando o Mundo do Inglês: Dicas Essenciais para o Aprendizado Eficiente"
-curso: "Aprenda inglês com um curso prático"
+
 titlePopup: "Melhore seu inglês estudando através de um E-book"
 contentPopup: "Prepare-se para se comunicar de maneira confiante em qualquer situação! Adquira agora o E-book e desbrave as 2500 frases mais usadas no cotidiano em inglês."
-imgAD: "/assets/img/holding-Frases-resize.png.webp"
+imgPopup: "/assets/img/Box-2500-Frases-Rs.png.webp"
+
 titleAD: "2500 FRASES EM INGLÊS"
 contentAD: "O combo 2500 Frases em Inglês, é um conjuntos de E-books (Livros Digitais) em inglês repletos de frases em Inglês com tradução e áudios. Frases que são bem usadas no dia a dia , destinados à você que precisa estudar e praticar inglês diariamente.
 <br><br>
 A prática da Audição e Leitura é um processo crucial para desenvolvermos a fluência no Inglês e estes E-books te auxiliarão exatamente neste ponto, possibilitando um enorme resultado na língua inglesa aos seus leitores."
-date:   2023-11-10 19:23:56 +0000
+imgAD: "/assets/img/holding-Frases-resize.png.webp"
+
+ebook: "https://go.hotmart.com/U88361980R"
+curso: "https://go.hotmart.com/Y88574459H"
+
+date: 2023-11-10 19:23:56 +0000
 categories: english
 ---
 

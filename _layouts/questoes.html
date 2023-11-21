@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/stylesheets/questions.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/stylesheets/personalized.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/stylesheets/nav.css' | relative_url }}">
+    <title>{{ page.title }}</title>
+</head>
+<body>
+    {% include nav.html %}
+    {% include propaganda2.html %}
+    <div class="container">
+        <div class="estatistica">
+            <p>Questões Certas <span id="corretas">0/0</span></p>
+            <p>Questão Atual <span id="atual">0/0</span></p>
+        </div>
+        <h2 id="question"></h2>
+        <ol class="alternatives-list">
+            <li class="alternative">
+                <input type="radio" class="form-check-input" name="item" id="1" value="1">
+                <label class="form-check-label" for="1">
+                    <p></p>
+                </label>
+            </li>
+            <li class="alternative">
+                <input type="radio" class="form-check-input" name="item" id="2" value="2">
+                <label class="form-check-label" for="2">
+                    <p></p>
+                </label>
+            </li>
+            <li class="alternative">
+                <input type="radio" class="form-check-input" name="item" id="3" value="3">
+                <label class="form-check-label" for="3">
+                    <p></p>
+                </label>
+            </li>
+            <li class="alternative">
+                <input type="radio" class="form-check-input" name="item" id="4" value="4">
+                <label class="form-check-label" for="4">
+                    <p></p>
+                </label>
+            </li>
+        </ol>
+    </div>
+    <div class="send">
+        <button id="submit" onclick="verifySubmit()">ADVINHAR</button>
+        <button id="skip" onclick="changeElements(index)">PRÓXIMO</button>
+    </div>
+    {% include google-analytics.html %}
+</body>
+<script defer>
+    var questions = [];
+    var correctAnswer;
+    var otherAlternatives = [];
+    var correctQuestions = 0;
+    var index = 0;
+
+    async function reqQuestions() {
+        var data = await fetch('https://jservice.io/api/random/?count=30');
+        data = await data.json();
+        questions = data;
+        data.forEach(d => otherAlternatives.push(d.answer));
+
+        changeElements(index); // start change elements
+    }
+
+    function verifySubmit() {
+        var inputs = document.querySelectorAll("input");
+        
+        for(let i=0; i<inputs.length; i++) {
+            if(inputs[i].checked){
+                
+                if(inputs[i].id == correctAnswer){ 
+                    inputs[i].parentElement.style.backgroundColor = "rgba(23, 196, 23, 0.5)"; 
+                    correctQuestions+=1;
+                    break; 
+                }
+                else { 
+                    inputs[i].parentElement.style.backgroundColor = "rgba(235, 48, 48, 0.5)";
+                    inputs[correctAnswer-1].parentElement.style.backgroundColor = "rgba(23, 196, 23, 0.5)";
+                    break;
+                }
+            }
+            inputs[i].checked = false;
+        }
+        //index++;
+        //changeElements(index);
+    }
+
+    function changeElements(indx) {
+
+        var corQuestions = document.getElementById("corretas");
+        var atualQuestion = document.getElementById("atual");
+        var questionTitle = document.getElementById("question");
+        var alternatives = document.getElementsByClassName("form-check-label");
+        
+        corQuestions.innerHTML = `${correctQuestions}/30`;
+        atualQuestion.innerHTML = `${indx}/30`;
+        questionTitle.innerText = questions[indx].question;
+        
+        var randomAlternativePos = Math.floor(Math.random() * 4);
+
+        var incorrectAnswersUsed = []; // salvar as incorretas para não repetir no loop
+        for(let i=0; i < alternatives.length; i++) {
+
+            alternatives[i].parentElement.style.backgroundColor = "white";
+
+            let paragraph = alternatives[i].children[0];
+
+            if(i == randomAlternativePos) {
+                paragraph.innerText = questions[indx].answer;
+                correctAnswer = i+1;
+            }
+            else {
+                var ok = false;
+                do {
+                    var randomIncorrectAlt = Math.floor(Math.random() * otherAlternatives.length);
+                    var verifyDuplicate = incorrectAnswersUsed.find((e) => e == randomIncorrectAlt);
+                    var incorrectAnswer = otherAlternatives[randomIncorrectAlt];
+                    
+                    if(incorrectAnswer != questions[indx].answer && verifyDuplicate == undefined){
+                        paragraph.innerText = incorrectAnswer;
+                        incorrectAnswersUsed.push(randomIncorrectAlt);
+                        ok = true;
+                    }
+                } while(!ok)
+            }
+        }
+        
+        index++;
+    }
+
+    window.onload = (async () => await reqQuestions())()
+</script>
+</html>

@@ -4,10 +4,10 @@
         <div class="janela">
             <h2 style="color: white; font-size: 20px;font-weight: bold;">{{ page.titlePopup }}</h2>
             <div class="conteudo">
-                <img width="250px" src="{{ '/assets/img/Box-2500-Frases-Rs.png.webp' | relative_url }}" alt="">
+                <img width="250px" src="{{ page.imgPopup | relative_url }}" alt="">
             </div>
             <p>{{ page.contentPopup }}</p>
-            <button>Conferir</button>
+            <a href="{{ page.ebook }}">Conferir</a>
         </div>
     </div>
 </div>
@@ -16,7 +16,6 @@
     function displayAd() {
         let anuncio = document.getElementById("ad");
         anuncio.style.display = "flex";
-        disableScroll();
     }
 
     setTimeout(displayAd, 5000);

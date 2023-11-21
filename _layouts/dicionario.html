@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/stylesheets/dictionary.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/stylesheets/personalized.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/stylesheets/nav.css' | relative_url }}">
+    <title>Dicionário</title>
+</head>
+<body>
+    {% include nav.html %}
+    {% include propaganda2.html %}
+    <div class="search">
+        <h1>Dicionário Online (BETA)</h1>
+        <div class="searchComponent">
+            <input id="searchField" placeholder="Digite uma palavra em inglês" type="text">
+            <button id="btn" onclick="search()">&#x1F50D;</button>
+        </div>
+    </div>
+    {% include popupAD.html %}
+    {% include google-analytics.html %}
+</body>
+
+<script defer>
+
+    async function reqWord(entry) {
+        var req = fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${entry}`);
+        return await req;
+    }
+
+    async function search() {
+        var entry = document.getElementById("searchField");
+        var res = await reqWord(entry.value);
+        res = await res.json();
+        
+        removeElement();
+        addElement(res[0]);
+        disableButton();
+    }
+
+    function disableButton() {
+        var btn = document.getElementById('btn');
+        btn.setAttribute('disabled', 'true');
+        setTimeout(() => btn.removeAttribute('disabled'), 3000);
+    }
+
+    function removeElement() {
+        try {
+            var resultDiv = document.getElementById("resultContainer");
+            resultDiv.remove();
+        }
+        catch (error) {}
+    }
+
+    function addElement(word) {
+        // criar div de resultado da pesquisa
+        var resultDiv = document.createElement("div");
+        resultDiv.className = "result";
+        resultDiv.id = "resultContainer"
+        document.body.appendChild(resultDiv);
+
+        //criar o "titulo" da palavra pesquisada e atribuir ao result
+        var wordTitle = document.createElement('h2');
+        wordTitle.id = "word";
+        wordTitle.innerText = word.word.toUpperCase();
+        
+        //criar o "audio" da palavra pesquisada e atribuir ao result
+        var audio = document.createElement('audio');
+        audio.id = "audio";
+        word.phonetics.forEach(a => {
+            if(a.audio != ""){ audio.src = a.audio }
+        });
+
+        var source = document.createElement('source');
+        source.id = "wordAudio";
+        source.type = "audio/mpeg";
+        
+        audio.appendChild(source);
+        audio.controls = "controls";
+        audio.load();
+
+        resultDiv.appendChild(wordTitle);
+        resultDiv.appendChild(audio);
+
+        function buildElementOfResult(partSpeech, meanings) {
+
+            var part = document.createElement('h4');
+            var list = document.createElement('ol');
+            var item = document.createElement('li');
+            var definitionContainer = document.createElement('div');
+            var definitionList = document.createElement('ol');
+            var exampleContainer = document.createElement('div');
+            var exampleList = document.createElement('ol');
+            var definition = document.createElement('h5');
+            var example = document.createElement('h5');
+
+            resultDiv.appendChild(part);
+            resultDiv.appendChild(list);
+            list.appendChild(item);
+            item.appendChild(definitionContainer);
+            item.appendChild(exampleContainer);
+            definitionContainer.appendChild(definition);
+            exampleContainer.appendChild(example);
+
+            part.innerText = partSpeech;
+            definition.innerText = "DEFINIÇÃO:"
+            
+            meanings.definitions.forEach(d => {
+                
+                if(d.definition != undefined) { 
+                    //contentDefinition.innerText = d.definition;
+                    var indxContent = document.createElement('li');
+                    var contentDefinition = document.createElement('p');
+                    
+                    indxContent.appendChild(contentDefinition);
+                    definitionList.appendChild(indxContent)
+
+                    contentDefinition.innerText = d.definition;
+                    definitionContainer.appendChild(definitionList);
+                }
+
+                if(d.example != undefined) {
+                    example.innerText = "EXEMPLO:";
+                    var indxContent = document.createElement('li');
+                    var contentExample = document.createElement('p');
+                    
+                    indxContent.appendChild(contentExample);
+                    exampleList.appendChild(indxContent)
+
+                    contentExample.innerText = d.example;
+                    exampleContainer.appendChild(exampleList);
+                }
+            });
+        }
+
+        word.meanings.forEach(e => {
+            switch(e.partOfSpeech) {
+                case 'noun':
+                    buildElementOfResult('Substantivo', e);
+                    break;
+                case 'verb':
+                    console.log('verbo');
+                    buildElementOfResult('Verbo', e);
+                    break;
+                case 'adjective':
+                    console.log('adjetivo');
+                    buildElementOfResult('Adjetivo', e);
+                    break;
+                case 'interjection':
+                    console.log('interjeição');
+                    buildElementOfResult('Interjeição', e);
+                    break;
+                case 'pronoun':
+                    console.log('pronome');
+                    buildElementOfResult('Pronome', e);
+                    break;
+                case 'adverb':
+                    console.log('advérbio');
+                    buildElementOfResult('Advérbio', e);
+                    break;
+                case 'preposition':
+                    console.log('preposição');
+                    buildElementOfResult('Preposição', e);
+                    break;
+                case 'conjunction':
+                    console.log('conjunção');
+                    buildElementOfResult('Conjunção', e);
+                    break;
+            }
+        });
+    }
+
+</script>
+
+</html>
